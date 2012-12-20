@@ -1,0 +1,14 @@
+{
+  "name": "netbios-name",
+  "version": "0.0.1",
+  "author": "Ben Kelly <ben@wanderview.com>",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "nodeunit": "~0.7.4"
+  },
+  "scripts": {
+    "test":"nodeunit test"
+  },
+  "main": "name.js"
+}
