@@ -57,7 +57,7 @@ function compressName(buf, offset, nameMap, name, callback) {
   var bytes = 0;
 
   // If we have written this name before, then create a pointer to it
-  if (nameMap[name]) {
+  if (nameMap && nameMap[name]) {
     var pointer = nameMap[name] & 0x3fff;
 
     // The top 2-bits must be set as a flag indicating its a pointer
@@ -77,7 +77,9 @@ function compressName(buf, offset, nameMap, name, callback) {
 
     // Record the we are storing the name at this location in the buffer
     // so that later names can point to it.
-    nameMap[name] = offset + bytes;
+    if (nameMap) {
+      nameMap[name] = offset + bytes;
+    }
 
     // Extract the first part of the name
     var dotIndex = name.indexOf('.');
