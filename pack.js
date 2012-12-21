@@ -63,6 +63,12 @@ function compressName(buf, offset, nameMap, name, callback) {
     // The top 2-bits must be set as a flag indicating its a pointer
     pointer |= 0xc000;
 
+    if ((buf.length - offset) < 2) {
+      callback('buffer not large enough to write label pointer for name [' +
+               name + ']');
+      return;
+    }
+
     buf.writeUInt16BE(pointer, offset + bytes);
     bytes += 2;
 
@@ -82,6 +88,9 @@ function compressName(buf, offset, nameMap, name, callback) {
 
     if (label.length > 64) {
       callback('Label [' + label + '] is more than 64 characters long.');
+      return;
+    } else if ((buf.length - offset) < (1 + label.length)) {
+      callback('buffer not large enough to write name [' + name + ']');
       return;
     }
 
