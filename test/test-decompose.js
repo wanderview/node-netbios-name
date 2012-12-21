@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var decompose = require('../decompose');
 
@@ -12,7 +12,7 @@ module.exports.testSimpleName = function(test) {
     test.equals(scopeId, '', 'scope ID');
     test.done();
   });
-}
+};
 
 module.exports.testBadSimpleName = function(test) {
   test.expect(1);
@@ -21,7 +21,7 @@ module.exports.testBadSimpleName = function(test) {
     test.notEqual(error, null, 'decompose callback error');
     test.done();
   });
-}
+};
 
 module.exports.testFullName = function(test) {
   test.expect(4);
@@ -33,7 +33,7 @@ module.exports.testFullName = function(test) {
     test.equals(scopeId, 'example.com', 'scope ID');
     test.done();
   });
-}
+};
 
 module.exports.testBadFullName = function(test) {
   test.expect(1);
@@ -42,4 +42,4 @@ module.exports.testBadFullName = function(test) {
     test.notEqual(error, null, 'decompose callback error');
     test.done();
   });
-}
+};
