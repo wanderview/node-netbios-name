@@ -57,7 +57,7 @@ function compressName(buf, offset, nameMap, name, callback) {
   var bytes = 0;
 
   // If we have written this name before, then create a pointer to it
-  if (nameMap && nameMap[name]) {
+  if (nameMap && nameMap[name] !== undefined) {
     var pointer = nameMap[name] & 0x3fff;
 
     // The top 2-bits must be set as a flag indicating its a pointer
