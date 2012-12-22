@@ -172,7 +172,7 @@ module.exports.testFullNameBadScopeId = function(test) {
   });
 };
 
-module.exports.testShortNameNoPointers = function(test) {
+module.exports.testNoPointers = function(test) {
   test.expect(1);
 
   var name = 'foobar';
@@ -182,5 +182,68 @@ module.exports.testShortNameNoPointers = function(test) {
   pack(buf, 0, null, name, suffix, function(error, nLen) {
     test.equal(error, null, 'callback error');
     test.done();
+  });
+};
+
+module.exports.testShortNamePointer = function(test) {
+  test.expect(4);
+
+  var nameMap = {};
+  var name = 'foobar';
+  var suffix = 0x20;
+  var buf = new Buffer(38);
+  var bytes = 0;
+
+  pack(buf, bytes, nameMap, name, suffix, function(error, nLen) {
+    test.equal(error, null, 'callback error');
+
+    bytes += nLen;
+
+    pack(buf, bytes, nameMap, name, suffix, function(error2, nLen2) {
+      test.equal(error2, null, 'second pack callback error');
+      test.notEqual(nLen2, nLen, 'second packed length is different');
+      test.equal(nLen2, 2, 'second packed length is compressed');
+      test.done();
+    });
+  });
+};
+
+module.exports.testFullNamePointer = function(test) {
+  test.expect(3);
+
+  var nameMap = {};
+  var scopeId = 'example.com';
+  var name = 'foobar.' + scopeId;
+  var name2 = 'snafu.' + scopeId;
+  var suffix = 0x20;
+
+  var expectedLength = 1;
+  expectedLength += 32; // 32 byte netbios name
+  expectedLength += 1;  // 1 byte length for 'example'
+  expectedLength += 'example'.length;
+  expectedLength += 1;  // 1 byte length for 'com'
+  expectedLength += 'com'.length;
+  expectedLength += 1;  // 1 byte for trailing null byte
+  expectedLength += 1;  // 1 byte for second netbios name
+  expectedLength += 32; // 32 by netbios name
+  expectedLength += 2;  // pointer to first scope ID
+
+  var buf = new Buffer(expectedLength);
+  var bytes = 0;
+
+  pack(buf, bytes, nameMap, name, suffix, function(error, nLen) {
+    test.equal(error, null, 'callback error');
+
+    bytes += nLen;
+
+    pack(buf, bytes, nameMap, name2, suffix, function(error2, nLen2) {
+      test.equal(error2, null, 'second pack callback error');
+
+      bytes += nLen2;
+
+      test.equal(bytes, expectedLength, 'total expected packed length');
+
+      test.done();
+    });
   });
 };
