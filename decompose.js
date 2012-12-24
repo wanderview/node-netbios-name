@@ -1,3 +1,5 @@
+"use strict";
+
 // Extract the first part of the full domain fullName as the simple Netbios
 // fullName.  Then pad out to 15-bytes as the official Netbios short name
 // is fixed with.
@@ -25,4 +27,4 @@ module.exports = function(fullName, callback) {
   }
 
   callback(null, netbiosName, scopeId);
-}
+};

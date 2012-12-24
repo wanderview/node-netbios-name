@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Parse a NetBIOS name.  This uses standard DNS name compression plus
 // some extra encoding for the first part representing the NetBIOS specific
@@ -19,7 +19,7 @@ module.exports = function(buf, offset, callback) {
       callback(null, nLen, decoded, suffix);
     });
   });
-}
+};
 
 // Decompress the name from the packet.  The compression scheme is defined
 // in RFC 883 and is the same method used in DNS packets.  Essentially, names
@@ -31,7 +31,7 @@ module.exports = function(buf, offset, callback) {
 // indicate an offset into the packet from which to read the remaining labels
 // for the name.
 function decompressName(buf, offset, callback) {
-  var name = "";
+  var name = '';
   var bytes = 0;
 
   var octet = buf.readUInt8(offset + bytes);
@@ -127,7 +127,7 @@ function decodeName(name, callback) {
     encoded = name.slice(0, periodIndex);
   }
 
-  var decoded = "";
+  var decoded = '';
   var suffix = 0;
   var charValue = 0;;
 

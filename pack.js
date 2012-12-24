@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var decompose = require('./decompose');
 
@@ -18,7 +18,7 @@ module.exports = function(buf, offset, nameMap, name, suffix, callback) {
       callback(null, nLen);
     });
   });
-}
+};
 
 function encodeName(name, suffix, callback) {
 
