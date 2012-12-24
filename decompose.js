@@ -1,11 +1,25 @@
 'use strict';
 
-// Extract the first part of the full domain fullName as the simple Netbios
-// fullName.  Then pad out to 15-bytes as the official Netbios short name
-// is fixed with.
-module.exports = function(fullName, callback) {
-  // Only the first part of the domain fullName should be encoded as a NetbIOS
-  // fullName.
+//
+// Decompose a given fully qualified domain name (FQDN) into a NetBIOS name and
+// its accompanying scope ID.  All NetBIOS names are a fixed width of 16-bytes
+// consisting of 15 name bytes and a single trailing suffix byte.  This routine
+// will pad the first element of the FQDN out to 15-bytes using space
+// characters.  An FQDN whose first part is greater than 15-bytes produces an
+// error.  The scope ID does not include the initial dot.
+//
+// For example:
+//
+//    decompose('foobar.example.com', function(error, nbname, scope) {
+//      nbname; // 'foobar         '
+//      scope;  // 'example.com'
+//    });
+//
+
+module.exports = decompose;
+
+function decompose(fullName, callback) {
+  // Separate the name into its first part and the trailing domain
   var shortName = fullName;
   var scopeId = '';
   var dotIndex = fullName.indexOf('.');
@@ -19,9 +33,8 @@ module.exports = function(fullName, callback) {
     return;
   }
 
+  // space pad NetBIOS name out to 15 characters
   var netbiosName = shortName;
-
-  // space pad fullName out to 15 characters
   for (var i = 0; (shortName.length + i) < 15; ++i) {
     netbiosName += ' ';
   }
