@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Extract the first part of the full domain fullName as the simple Netbios
 // fullName.  Then pad out to 15-bytes as the official Netbios short name
