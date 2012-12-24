@@ -18,12 +18,12 @@
 //  pack(buf, offset, nameMap, 'foobar.hmm.com', 0x20, function(error, nLen) {
 //    if (error) { // handle error... }
 //
-//    bytes += nLen;
+//    offset += nLen;
 //
 //    pack(buf, offset, nameMap, 'snafu.hmm.com', 0x20, function(error, nLen) {
 //      if (error) { // handle error... }
 //
-//      bytes += nLen;
+//      offset += nLen;
 //
 //      // the 'hmm.com' portion of the name will be packed using pointers
 //      // using only 2 bytes instead of the normal 9 bytes.

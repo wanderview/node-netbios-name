@@ -1,9 +1,26 @@
+// Deserialize the given buffer storing an encoded and compressed NetBIOS
+// name.  The name serialization format is defined by the NetBIOS encoding in
+// RFC1001 and the domain name compression in RFC883:
+//
+//  http://tools.ietf.org/rfc/rfc1001.txt
+//  http://tools.ietf.org/rfc/rfc883.txt
+//
+// Example use:
+//
+//  var offset = 0;
+//  unpack(buf, offset, function(error, nLen, name, suffix) {
+//    if (error) { // handle error... }
+//
+//    offset += nLen;             // number of bytes parsed from the buffer
+//    name === 'foobar.hmm.com';  // FQDN parsed from the buffer
+//    suffix === 0x20;            // Suffix byte from name defining node type
+//  });
+
 'use strict';
 
-// Parse a NetBIOS name.  This uses standard DNS name compression plus
-// some extra encoding for the first part representing the NetBIOS specific
-// name.  See RFC 1001.
-module.exports = function(buf, offset, callback) {
+module.exports = unpack;
+
+function unpack(buf, offset, callback) {
   decompressName(buf, offset, function(error, nLen, name) {
     if (error) {
       callback(error);
@@ -19,7 +36,7 @@ module.exports = function(buf, offset, callback) {
       callback(null, nLen, decoded, suffix);
     });
   });
-};
+}
 
 // Decompress the name from the packet.  The compression scheme is defined
 // in RFC 883 and is the same method used in DNS packets.  Essentially, names
