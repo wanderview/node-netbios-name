@@ -1,6 +1,3 @@
-'use strict';
-
-//
 // Decompose a given fully qualified domain name (FQDN) into a NetBIOS name and
 // its accompanying scope ID.  All NetBIOS names are a fixed width of 16-bytes
 // consisting of 15 name bytes and a single trailing suffix byte.  This routine
@@ -14,7 +11,8 @@
 //      nbname; // 'foobar         '
 //      scope;  // 'example.com'
 //    });
-//
+
+'use strict';
 
 module.exports = decompose;
 

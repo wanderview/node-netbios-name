@@ -1,8 +1,42 @@
+// Serialize a fully qualified domain name (FQDN) and its accompanying NetBIOS
+// suffix byte into the given buffer.  The serialization is implemented using
+// NetBIOS encoding from RFC1001 and domain name compression from RFC883:
+//
+//  http://tools.ietf.org/rfc/rfc1001.txt
+//  http://tools.ietf.org/rfc/rfc883.txt
+//
+// Name compression supports the ability to use offset pointers for duplicated
+// labels within a buffer.  In order to use this feature the same nameMap hash
+// must be passed into all pack() calls operating on the same buffer.  If you
+// do not want to use label pointers, pass null for the nameMap.
+//
+// Example use:
+//
+//  var buf = new Buffer(512);
+//  var nameMap = {};
+//  var offset = 0;
+//  pack(buf, offset, nameMap, 'foobar.hmm.com', 0x20, function(error, nLen) {
+//    if (error) { // handle error... }
+//
+//    bytes += nLen;
+//
+//    pack(buf, offset, nameMap, 'snafu.hmm.com', 0x20, function(error, nLen) {
+//      if (error) { // handle error... }
+//
+//      bytes += nLen;
+//
+//      // the 'hmm.com' portion of the name will be packed using pointers
+//      // using only 2 bytes instead of the normal 9 bytes.
+//    });
+//  });
+
 'use strict';
+
+module.exports = pack;
 
 var decompose = require('./decompose');
 
-module.exports = function(buf, offset, nameMap, name, suffix, callback) {
+function pack(buf, offset, nameMap, name, suffix, callback) {
   encodeName(name, suffix, function(error, encoded) {
     if (error) {
       callback(error);
@@ -18,10 +52,9 @@ module.exports = function(buf, offset, nameMap, name, suffix, callback) {
       callback(null, nLen);
     });
   });
-};
+}
 
 function encodeName(name, suffix, callback) {
-
   decompose(name, function(error, netbiosName, scopeId) {
     if (error) {
       callback(error);
