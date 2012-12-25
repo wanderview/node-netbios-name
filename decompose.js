@@ -1,16 +1,25 @@
-// Decompose a given fully qualified domain name (FQDN) into a NetBIOS name and
-// its accompanying scope ID.  All NetBIOS names are a fixed width of 16-bytes
-// consisting of 15 name bytes and a single trailing suffix byte.  This routine
-// will pad the first element of the FQDN out to 15-bytes using space
-// characters.  An FQDN whose first part is greater than 15-bytes produces an
-// error.  The scope ID does not include the initial dot.
+// Copyright (c) 2013, Benjamin J. Kelly ("Author")
+// All rights reserved.
 //
-// For example:
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met: 
 //
-//    decompose('foobar.example.com', function(error, nbname, scope) {
-//      nbname; // 'foobar         '
-//      scope;  // 'example.com'
-//    });
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer. 
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution. 
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 'use strict';
 
@@ -27,7 +36,8 @@ function decompose(fullName, callback) {
   }
 
   if (shortName.length > 15) {
-    callback('NetBIOS name [' + shortName + '] too long.  Must be <= 15 chars.');
+    callback(new Error('NetBIOS name [' + shortName +
+                       '] too long.  Must be <= 15 chars.'));
     return;
   }
 

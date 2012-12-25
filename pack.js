@@ -1,34 +1,25 @@
-// Serialize a fully qualified domain name (FQDN) and its accompanying NetBIOS
-// suffix byte into the given buffer.  The serialization is implemented using
-// NetBIOS encoding from RFC1001 and domain name compression from RFC883:
+// Copyright (c) 2013, Benjamin J. Kelly ("Author")
+// All rights reserved.
 //
-//  http://tools.ietf.org/rfc/rfc1001.txt
-//  http://tools.ietf.org/rfc/rfc883.txt
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met: 
 //
-// Name compression supports the ability to use offset pointers for duplicated
-// labels within a buffer.  In order to use this feature the same nameMap hash
-// must be passed into all pack() calls operating on the same buffer.  If you
-// do not want to use label pointers, pass null for the nameMap.
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer. 
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution. 
 //
-// Example use:
-//
-//  var buf = new Buffer(512);
-//  var nameMap = {};
-//  var offset = 0;
-//  pack(buf, offset, nameMap, 'foobar.hmm.com', 0x20, function(error, nLen) {
-//    if (error) { // handle error... }
-//
-//    offset += nLen;
-//
-//    pack(buf, offset, nameMap, 'snafu.hmm.com', 0x20, function(error, nLen) {
-//      if (error) { // handle error... }
-//
-//      offset += nLen;
-//
-//      // the 'hmm.com' portion of the name will be packed using pointers
-//      // using only 2 bytes instead of the normal 9 bytes.
-//    });
-//  });
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 'use strict';
 
@@ -97,8 +88,8 @@ function compressName(buf, offset, nameMap, name, callback) {
     pointer |= 0xc000;
 
     if ((buf.length - offset) < 2) {
-      callback('buffer not large enough to write label pointer for name [' +
-               name + ']');
+      callback(new Error('buffer not large enough to write label pointer ' +
+                         'for name [' + name + ']'));
       return;
     }
 
@@ -122,10 +113,12 @@ function compressName(buf, offset, nameMap, name, callback) {
     }
 
     if (label.length > 64) {
-      callback('Label [' + label + '] is more than 64 characters long.');
+      callback(new Error('Label [' + label + '] is more than 64 characters ' +
+                         'long.'));
       return;
     } else if ((buf.length - offset) < (1 + label.length)) {
-      callback('buffer not large enough to write name [' + name + ']');
+      callback(new Error('buffer not large enough to write name [' + name +
+                         ']'));
       return;
     }
 
