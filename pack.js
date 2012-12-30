@@ -59,7 +59,7 @@ function encodeName(name, suffix, callback) {
     // nibbles are then each converted into a printable character by adding
     // the character 'A' to them.  See page 26 in RFC 1001 for more details.
     var encoded = '';
-    for (var i = 0; i < netbiosName.length; ++i) {
+    for (var i = 0, n = netbiosName.length; i < n; ++i) {
       var ascii = netbiosName.charCodeAt(i);
       var nibble1 = ((ascii & 0xf0) >> 4);
       var nibble2 = (ascii & 0x0f);

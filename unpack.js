@@ -155,7 +155,7 @@ function decodeName(name, callback) {
   var suffix = 0;
   var charValue = 0;;
 
-  for(var i = 0; i < encoded.length; ++i) {
+  for (var i = 0, n = encoded.length; i < n; ++i) {
 
     // decode char to first nibble
     if (i % 2 === 0) {

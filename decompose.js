@@ -43,7 +43,7 @@ function decompose(fullName, callback) {
 
   // space pad NetBIOS name out to 15 characters
   var netbiosName = shortName;
-  for (var i = 0; (shortName.length + i) < 15; ++i) {
+  for (var i = 0, n = (15 - shortName.length); i < n; ++i) {
     netbiosName += ' ';
   }
 
