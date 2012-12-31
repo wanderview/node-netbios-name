@@ -42,10 +42,8 @@ function decompose(fullName, callback) {
   }
 
   // space pad NetBIOS name out to 15 characters
-  var netbiosName = shortName;
-  for (var i = 0, n = (15 - shortName.length); i < n; ++i) {
-    netbiosName += ' ';
-  }
+  var pad = '               '.slice(shortName.length);
+  var netbiosName = shortName + pad;
 
   callback(null, netbiosName, scopeId);
 };
