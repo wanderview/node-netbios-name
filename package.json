@@ -1,6 +1,12 @@
 {
   "name": "netbios-name",
-  "description": "Utility code for working with NetBIOS names."
+  "description": "Utility code for working with NetBIOS names.",
+  "keywords": [
+    "netbios",
+    "util",
+    "utility",
+    "name"
+  ],
   "version": "0.1.0",
   "author": "Ben Kelly <ben@wanderview.com>",
   "license": "BSD",
