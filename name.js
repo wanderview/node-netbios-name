@@ -81,6 +81,12 @@ function NetbiosName(opts) {
 
   self.suffix = (typeof opts.suffix === 'number') ? opts.suffix
                                                   : DEFAULT_SUFFIX;
+  if (self.suffix > 0xff || self.suffix < 0) {
+    self.error = new Error('Illegal suffix byte [' + self.suffix +
+                           '].  Must be between 0x00 and 0xff.');
+    return self;
+  }
+
   self.usage = SUFFIX_TO_USAGE[self.suffix] || 'Unknown';
   self.bytesRead = 0;
 
@@ -111,6 +117,18 @@ NetbiosName.prototype.write = function(buf, offset, nameMap) {
 
   var encoded = this._encodeName();
   return this._compressName(buf, offset, nameMap, encoded);
+};
+
+NetbiosName.prototype.toString = function() {
+  // Make sure suffix is displayed in hex with two digits
+  var suffixString = this.suffix.toString(16);
+  if (suffixString.length < 2) {
+    suffixString = '0' + suffixString;
+  }
+
+  // wireshark style format:  foobar<20>.example.com
+  return this.name + '<' + suffixString + '>' +
+         (this.scopeId ? ('.' + this.scopeId) : '');
 };
 
 NetbiosName.prototype._decomposeAndInit = function(fqdn) {

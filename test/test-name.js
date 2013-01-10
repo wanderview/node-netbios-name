@@ -81,6 +81,21 @@ module.exports.testNewBadFullName = function(test) {
   test.done();
 };
 
+module.exports.testToString = function(test) {
+  test.expect(3);
+
+  var nbname = new NBName({fqdn: 'foobar.example.com', suffix: 0x20});
+  test.equal(nbname.toString(), 'foobar<20>.example.com');
+
+  nbname = new NBName({fqdn: 'foobar.example.com', suffix: 0x00});
+  test.equal(nbname.toString(), 'foobar<00>.example.com');
+
+  nbname = new NBName({fqdn: 'foobar', suffix: 0x00});
+  test.equal(nbname.toString(), 'foobar<00>');
+
+  test.done();
+};
+
 module.exports.testWriteSimpleName = function(test) {
   test.expect(5);
 

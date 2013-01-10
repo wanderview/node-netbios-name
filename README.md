@@ -22,6 +22,7 @@ A utility module for working with NetBIOS names as defined in [RFC1001][],
     nbname.fqdn === 'foobar.example.com';               // true
     nbname.suffix === 0x20;                             // true
     nbname.usage === 'File Server Service';             // true
+    nbname.toString() === 'foobar<20>.example.com';     // true
 
     var buf = new Buffer(128);
 
@@ -29,8 +30,6 @@ A utility module for working with NetBIOS names as defined in [RFC1001][],
     if (res.error) {
       throw res.error;
     }
-
-    res.bytesWritten === (1 + 32 + 1 + 7 + 1 + 3 + 1);  // true
 
     var nbname2 = NBName.fromBuffer(buf, 0);
     if (nbname2.error) {
@@ -139,6 +138,16 @@ Write the NetbiosName object instance out to the given buffer.
     will be set.  The buffer may have been partially modified even if an
     error occurs.
   * `bytesWritten` {Number} The number of bytes written to the buffer.
+
+### nbname.toString()
+
+Return a string representation of the NetBIOS name.  The format matches the
+style used by wireshark.  For example, a name of `foobar`, a scope ID of
+`example.com`, and suffix of `0x20` would be returned as the string
+`'foobar<20>.example.com'`.
+
+The string returned contains all of the unique information in the name, so
+it can be reasonably used as the key for a hash.
 
 [RFC1001]: http://tools.ietf.org/rfc/rfc1001.txt
 [RFC1002]: http://tools.ietf.org/rfc/rfc1002.txt
