@@ -3,6 +3,8 @@
 A utility module for working with NetBIOS names as defined in [RFC1001][],
 [RFC1002][], and [RFC883][].
 
+[![Build Status](https://travis-ci.org/wanderview/node-netbios-name.png)](https://travis-ci.org/wanderview/node-netbios-name)
+
 ## Example
 
     var NBName = require('netbios-name');
