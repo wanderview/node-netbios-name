@@ -7,6 +7,7 @@ A utility module for working with NetBIOS names as defined in [RFC1001][],
 
 ## Example
 
+``` javascript
     var NBName = require('netbios-name');
 
     // The following two statements are equivalent
@@ -44,6 +45,7 @@ A utility module for working with NetBIOS names as defined in [RFC1001][],
     nbname2.fqdn === nbname.fqdn;                       // true
     nbname2.suffix === nbname.suffix;                   // true
     nbname2.usage === nbname.usage;                     // true
+```
 
 ## Class: NetbiosName
 
