@@ -8,43 +8,43 @@ A utility module for working with NetBIOS names as defined in [RFC1001][],
 ## Example
 
 ``` javascript
-    var NBName = require('netbios-name');
+var NBName = require('netbios-name');
 
-    // The following two statements are equivalent
-    var nbname = new NBName({fqdn: 'foobar.example.com', suffix: 0x20});
-    var nbname = new NBName({name: 'foobar', scopeId: 'example.com',
-                             suffix: 0x20});
+// The following two statements are equivalent
+var nbname = new NBName({fqdn: 'foobar.example.com', suffix: 0x20});
+var nbname = new NBName({name: 'foobar', scopeId: 'example.com',
+                         suffix: 0x20});
 
-    if (nbname.error) {
-      throw nbname.error;
-    }
+if (nbname.error) {
+  throw nbname.error;
+}
 
-    nbname.name === 'foobar';                           // true
-    nbname.paddedName === 'foobar         ';            // true
-    nbname.scopeId === 'example.com';                   // true
-    nbname.fqdn === 'foobar.example.com';               // true
-    nbname.suffix === 0x20;                             // true
-    nbname.usage === 'File Server Service';             // true
-    nbname.toString() === 'foobar<20>.example.com';     // true
+nbname.name === 'foobar';                           // true
+nbname.paddedName === 'foobar         ';            // true
+nbname.scopeId === 'example.com';                   // true
+nbname.fqdn === 'foobar.example.com';               // true
+nbname.suffix === 0x20;                             // true
+nbname.usage === 'File Server Service';             // true
+nbname.toString() === 'foobar<20>.example.com';     // true
 
-    var buf = new Buffer(128);
+var buf = new Buffer(128);
 
-    var res = nbname.write(buf, 0, {});
-    if (res.error) {
-      throw res.error;
-    }
+var res = nbname.write(buf, 0, {});
+if (res.error) {
+  throw res.error;
+}
 
-    var nbname2 = NBName.fromBuffer(buf, 0);
-    if (nbname2.error) {
-      throw nbname2.error;
-    }
+var nbname2 = NBName.fromBuffer(buf, 0);
+if (nbname2.error) {
+  throw nbname2.error;
+}
 
-    nbname2.bytesRead === res.bytesWritten;             // true
-    nbname2.name === nbname.name;                       // true
-    nbname2.scopeId === nbname.scopeId;                 // true
-    nbname2.fqdn === nbname.fqdn;                       // true
-    nbname2.suffix === nbname.suffix;                   // true
-    nbname2.usage === nbname.usage;                     // true
+nbname2.bytesRead === res.bytesWritten;             // true
+nbname2.name === nbname.name;                       // true
+nbname2.scopeId === nbname.scopeId;                 // true
+nbname2.fqdn === nbname.fqdn;                       // true
+nbname2.suffix === nbname.suffix;                   // true
+nbname2.usage === nbname.usage;                     // true
 ```
 
 ## Class: NetbiosName
